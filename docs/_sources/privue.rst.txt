@@ -1,0 +1,21 @@
+privue package
+==============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   privue.client
+   privue.errors
+   privue.server
+   privue.util
+
+Module contents
+---------------
+
+.. automodule:: privue
+   :members:
+   :undoc-members:
+   :show-inheritance:

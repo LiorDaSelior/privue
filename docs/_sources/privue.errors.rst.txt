@@ -1,0 +1,21 @@
+privue.errors package
+=====================
+
+Submodules
+----------
+
+privue.errors.errors module
+---------------------------
+
+.. automodule:: privue.errors.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: privue.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:

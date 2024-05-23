@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>privue.util package &#8212; privue 0.12 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=3f949d3d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="privue-util-package">
+<h1>privue.util package<a class="headerlink" href="#privue-util-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-privue.util.util">
+<span id="privue-util-util-module"></span><h2>privue.util.util module<a class="headerlink" href="#module-privue.util.util" title="Link to this heading">¶</a></h2>
+<p>LDP - SUE Utility</p>
+<p>This submodule contains all the general utility functions which are used for the demo and JSON file format privatization support.</p>
+<p>About JSON format:
+Required format for privatization: JSON string must be comprised of main JSON Objects - each represents a unique user.
+Every user’s object has nested JSON objects which represent timestamps.
+The numeric values for each timestamp are held in an array (consistent order for every timestamp).
+If a user doesn’t have a record for a timestamp, it shouldn’t appear in the user object. Here is an example string (3 values per user record):
+See the “privatization_json_example” file in the Github directory.</p>
+<dl class="simple">
+<dt>Required format for estimation: JSON string must be comprised of 3 main JSON Objects:</dt><dd><p>“epsilon”, which is the value of the privacy budget.
+“attr_data”, which contains an array of sub-arrays (length 3) - [max value, min. value, bucket amount] of the particular value
+“data”, an object similar to the format for privatization. Instead of each record being the real value, it is the privatized histogram of it (result of client.get_private_vector)</p>
+</dd>
+</dl>
+<p>See the “estimation_json_example” file in the Github directory, which is a privatization of the “privatization_json_example” file.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.avg_estimation_with_json_file">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">avg_estimation_with_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_json_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_avg_histogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/privue/util/util.html#avg_estimation_with_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.avg_estimation_with_json_file" title="Link to this definition">¶</a></dt>
+<dd><p>Estimates the average of the original data, for each client value (using filepath).</p>
+<p>This function is a version of the server.average_estimation_multiple_attr function,
+which accommodates JSON string, in the specified format for estimation, as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_json_file</strong> – path for JSON file of the required format for estimation</p></li>
+<li><p><strong>return_avg_histogram</strong> (<em>optional</em>) – Specifying whether to return the average histogram estimation alongside the average estimation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>the first element in a result is the estimated average of the original data, using only the privatized data, for the particular value</dt><dd><p>the second element in a result is the average histogram - the result of get_avg_vector_estimation function, for the particular value</p>
+</dd>
+<dt>else:</dt><dd><p>return a list of floats - the estimated average for each particular value</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>if return_avg_histogram = True - return a list of average_estimation results for each value</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="privue.errors.html#privue.errors.errors.ValuePropertyMissing" title="privue.errors.errors.ValuePropertyMissing"><strong>ValuePropertyMissing</strong></a> – If a value is missing one of it’s properties (number of values must be non-zero)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.avg_estimation_with_json_str">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">avg_estimation_with_json_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_json_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_avg_histogram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/privue/util/util.html#avg_estimation_with_json_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.avg_estimation_with_json_str" title="Link to this definition">¶</a></dt>
+<dd><p>Estimates the average of the original data, for each client value.</p>
+<p>This function is a version of the server.average_estimation_multiple_attr function,
+which accommodates JSON string, in the specified format for estimation, as input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_json_str</strong> – a JSON string of the required format for estimation</p></li>
+<li><p><strong>return_avg_histogram</strong> (<em>optional</em>) – Specifying whether to return the average histogram estimation alongside the average estimation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>the first element in a result is the estimated average of the original data, using only the privatized data, for the particular value</dt><dd><p>the second element in a result is the average histogram - the result of get_avg_vector_estimation function, for the particular value</p>
+</dd>
+<dt>else:</dt><dd><p>return a list of floats - the estimated average for each particular value</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>if return_avg_histogram = True - return a list of average_estimation results for each value</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="privue.errors.html#privue.errors.errors.ValuePropertyMissing" title="privue.errors.errors.ValuePropertyMissing"><strong>ValuePropertyMissing</strong></a> – If a value is missing one of it’s properties (number of values must be non-zero)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.get_granularity_dataframe">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">get_granularity_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/privue/util/util.html#get_granularity_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.get_granularity_dataframe" title="Link to this definition">¶</a></dt>
+<dd><p>Outputs pandas dataframe detailing the range of each sub section</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_value</strong> – Max value in the Data Range</p></li>
+<li><p><strong>min_value</strong> – Min. value in the Data Range</p></li>
+<li><p><strong>bucket_amount</strong> – Amount of sub-sections (buckets) in Data Range</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas dataframe detailing the range of each sub section</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.get_tensor_list_from_privatized_json_str">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">get_tensor_list_from_privatized_json_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_json_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/privue/util/util.html#get_tensor_list_from_privatized_json_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.get_tensor_list_from_privatized_json_str" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a NDarray list required for average estimation from JSON string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_json_str</strong> – a JSON string of the required format for estimation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NDarray list (each shaped NxLxd, each d corresponding to specific number of buckets) required for average estimation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.privatize_json_file">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">privatize_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_json_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_amount_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/privue/util/util.html#privatize_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.privatize_json_file" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a JSON string of the required format for estimation (using filepath)</p>
+<p>This function is a generalized version of the get_private_vector_multiple_attr function,
+which accommodates JSON string, in the specified format for privatization, as input.
+It receives a list for each property and a list of values which correspond in their order.
+The epsilon privacy budget is shared across all values, as described in the spl technique - guaranteeing the entire array of privatized values is epsilon-LDP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_json_file_path</strong> – path for JSON file of the required format for privatization</p></li>
+<li><p><strong>epsilon</strong> – Privacy budget</p></li>
+<li><p><strong>max_value_per_attr_list</strong> – A list with a Max value of a Data Range for each value</p></li>
+<li><p><strong>min_value_per_attr_list</strong> – A list with a Min. value of a Data Range for each value</p></li>
+<li><p><strong>bucket_amount_per_attr_list</strong> – A list with a desired number of sub ranges (buckets) for each value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array of privatized binary vectors, which satisfies epsilon-LDP definition.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="privue.errors.html#privue.errors.errors.ValuePropertyMissing" title="privue.errors.errors.ValuePropertyMissing"><strong>ValuePropertyMissing</strong></a> – If a value is missing one of it’s properties (number of values must be non-zero)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="privue.util.util.privatize_json_str">
+<span class="sig-prename descclassname"><span class="pre">privue.util.util.</span></span><span class="sig-name descname"><span class="pre">privatize_json_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_json_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_amount_per_attr_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/privue/util/util.html#privatize_json_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#privue.util.util.privatize_json_str" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a JSON string of the required format for estimation</p>
+<p>This function is a generalized version of the get_private_vector_multiple_attr function,
+which accommodates JSON string, in the specified format for privatization, as input.
+It receives a list for each property and a list of values which correspond in their order.
+The epsilon privacy budget is shared across all values, as described in the spl technique - guaranteeing the entire array of privatized values is epsilon-LDP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_json_str</strong> – a JSON string of the required format for privatization</p></li>
+<li><p><strong>epsilon</strong> – Privacy budget</p></li>
+<li><p><strong>max_value_per_attr_list</strong> – A list with a Max value of a Data Range for each value</p></li>
+<li><p><strong>min_value_per_attr_list</strong> – A list with a Min. value of a Data Range for each value</p></li>
+<li><p><strong>bucket_amount_per_attr_list</strong> – A list with a desired number of sub ranges (buckets) for each value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array of privatized binary vectors, which satisfies epsilon-LDP definition.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="privue.errors.html#privue.errors.errors.ValuePropertyMissing" title="privue.errors.errors.ValuePropertyMissing"><strong>ValuePropertyMissing</strong></a> – If a value is missing one of it’s properties (number of values must be non-zero)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-privue.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-privue.util" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">privue</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Lior Belenkov, Maya Iwanir.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/privue.util.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

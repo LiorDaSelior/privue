@@ -1,0 +1,21 @@
+privue.server package
+=====================
+
+Submodules
+----------
+
+privue.server.server module
+---------------------------
+
+.. automodule:: privue.server.server
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: privue.server
+   :members:
+   :undoc-members:
+   :show-inheritance:
