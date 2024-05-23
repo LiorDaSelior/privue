@@ -26,7 +26,7 @@ import privue.server.server as server
 from typing import List, Dict
 
 
-def privatize_json_string(input_json_str : str, epsilon : float, max_value_per_attr_list : List[float], min_value_per_attr_list : List[float], bucket_amount_per_attr_list : List[int]):
+def privatize_json_str(input_json_str : str, epsilon : float, max_value_per_attr_list : List[float], min_value_per_attr_list : List[float], bucket_amount_per_attr_list : List[int]):
     """Returns a JSON string of the required format for estimation
 
     This function is a generalized version of the get_private_vector_multiple_attr function,
@@ -84,7 +84,7 @@ def privatize_json_file(input_json_file_path : str, epsilon : float, max_value_p
     """
     with open(input_json_file_path, 'r') as input_json_str:
         input_json_str = input_json_str.read()
-    return privatize_json_string(input_json_str, epsilon, max_value_per_attr_list, min_value_per_attr_list, bucket_amount_per_attr_list)
+    return privatize_json_str(input_json_str, epsilon, max_value_per_attr_list, min_value_per_attr_list, bucket_amount_per_attr_list)
    
         
 def _get_tensor_list_from_privatized_json_obj(input_json_obj : Dict) -> List[np.ndarray]:
