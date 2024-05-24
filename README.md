@@ -1,5 +1,5 @@
 # privue
-Package for Local Differential Privacy data privatization and estimation using the privatized data, following Unery Encoding technique.  
+Package for Local Differential Privacy data privatization and estimation using the privatized data, following Unary Encoding technique.  
 'pip install privue'  
 
 ### documentation
